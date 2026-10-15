@@ -70,4 +70,20 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return resultado != -1L
     }
+
+    // VALIDAR INICIO DE SESIÓN
+    fun validarLogin(correo: String, pass: String): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT $COLUMN_USER_ID FROM $TABLE_USERS WHERE $COLUMN_USER_EMAIL = ? AND $COLUMN_USER_PASSWORD = ?",
+            arrayOf(correo, pass)
+        )
+        var userId = -1
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+        }
+        cursor.close()
+        db.close()
+        return userId
+    }
 }
