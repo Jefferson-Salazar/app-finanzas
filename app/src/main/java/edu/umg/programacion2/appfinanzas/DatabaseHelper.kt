@@ -37,7 +37,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + COLUMN_USER_EMAIL + " TEXT UNIQUE, "
                 + COLUMN_USER_PASSWORD + " TEXT)")
 
-        // Tabla de (Ingresos y Gastos) 
+        // Tabla de (Ingresos y Gastos)
         val createTransactionsTable = ("CREATE TABLE " + TABLE_TRANSACTIONS + " ("
                 + COLUMN_TRANS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_TRANS_USER_ID + " INTEGER, "
