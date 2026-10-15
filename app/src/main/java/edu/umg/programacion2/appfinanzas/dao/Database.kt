@@ -102,4 +102,20 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return resultado != -1L
     }
+
+    // CALCULAR TOTALES (Ingresos, Gastos y Balance)
+    fun obtenerTotalPorTipo(userId: Int, tipo: String): Double {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT SUM($COLUMN_TRANS_AMOUNT) FROM $TABLE_TRANSACTIONS WHERE $COLUMN_TRANS_USER_ID = ? AND $COLUMN_TRANS_TYPE = ?",
+            arrayOf(userId.toString(), tipo)
+        )
+        var total = 0.0
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0)
+        }
+        cursor.close()
+        db.close()
+        return total
+    }
 }
