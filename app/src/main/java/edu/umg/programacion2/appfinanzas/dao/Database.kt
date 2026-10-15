@@ -1,5 +1,6 @@
 package edu.umg.programacion2.appfinanzas.dao
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -55,5 +56,18 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_TRANSACTIONS")
         onCreate(db)
+    }
+
+    // REGISTRAR USUARIO
+    fun registrarUsuario(nombre: String?, correo: String?, pass: String?): Boolean {
+        val db = this.getWritableDatabase()
+        val values = ContentValues()
+        values.put(COLUMN_USER_NAME, nombre)
+        values.put(COLUMN_USER_EMAIL, correo)
+        values.put(COLUMN_USER_PASSWORD, pass)
+
+        val resultado = db.insert(TABLE_USERS, null, values)
+        db.close()
+        return resultado != -1L
     }
 }
