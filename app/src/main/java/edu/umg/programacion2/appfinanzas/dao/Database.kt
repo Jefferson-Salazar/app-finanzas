@@ -86,4 +86,20 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return userId
     }
+
+    // INSERTAR TRANSACCIÓN
+    fun agregarTransaccion(userId: Int, tipo: String, categoria: String, monto: Double, descripcion: String, fecha: String): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_TRANS_USER_ID, userId)
+            put(COLUMN_TRANS_TYPE, tipo) // "INGRESO" o "GASTO"
+            put(COLUMN_TRANS_CATEGORY, categoria)
+            put(COLUMN_TRANS_AMOUNT, monto)
+            put(COLUMN_TRANS_DESC, descripcion)
+            put(COLUMN_TRANS_DATE, fecha)
+        }
+        val resultado = db.insert(TABLE_TRANSACTIONS, null, values)
+        db.close()
+        return resultado != -1L
+    }
 }
