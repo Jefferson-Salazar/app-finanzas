@@ -2,70 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#F4F7F6"
     android:gravity="center"
-    android:padding="24dp"
-    android:background="#F4F7F6">
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <!-- Nombre de la App -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="Qallet"
-        android:textSize="40sp"
-        android:textStyle="bold"
         android:textColor="#2C3E50"
-        android:layout_marginBottom="4dp"/>
+        android:textSize="40sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
         android:text="Tu flujo financiero inteligente"
-        android:textSize="14sp"
         android:textColor="#7F8C8D"
-        android:layout_marginBottom="36dp"/>
+        android:textSize="14sp" />
 
     <!-- Tarjeta del Formulario -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginBottom="24dp"
         android:background="#FFFFFF"
-        android:padding="20dp"
         android:elevation="4dp"
-        android:layout_marginBottom="24dp">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <EditText
             android:id="@+id/etCorreoLogin"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="#F9F9F9"
             android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:background="#F9F9F9"
-            android:layout_marginBottom="16dp"
-            android:textColor="#2C3E50"/>
+            android:textColor="#2C3E50" />
 
         <EditText
             android:id="@+id/etPasswordLogin"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="#F9F9F9"
             android:hint="Contraseña"
             android:inputType="textPassword"
             android:padding="12dp"
-            android:background="#F9F9F9"
-            android:layout_marginBottom="20dp"
-            android:textColor="#2C3E50"/>
+            android:textColor="#2C3E50" />
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Iniciar Sesión"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:backgroundTint="#27AE60"
-            android:textColor="#FFFFFF"/>
+            android:text="Iniciar Sesión"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Botón de Registro -->
@@ -73,9 +73,9 @@
         android:id="@+id/btnIrRegistro"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="¿No tienes una cuenta? Regístrate"
-        android:textSize="14sp"
         android:backgroundTint="#2C3E50"
-        android:textColor="#FFFFFF"/>
+        android:text="¿No tienes una cuenta? Regístrate"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
 
 </LinearLayout>
