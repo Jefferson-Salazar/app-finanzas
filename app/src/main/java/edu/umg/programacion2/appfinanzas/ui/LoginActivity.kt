@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
                 val userId = dbHelper.validarLogin(correo, password)
                 if (userId != -1) {
                     Toast.makeText(this, "¡Bienvenido a Qallet!", Toast.LENGTH_SHORT).show()
-                    
+
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish() // Cierra el Login
