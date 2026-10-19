@@ -22,6 +22,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "App Finanzas"
+rootProject.name = "Qallet"
+
 include(":app")
- 
+include(":ControlGastos-core")
+project(":ControlGastos-core").projectDir = file("../ContolGastos-core")
