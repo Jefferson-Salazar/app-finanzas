@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "edu.umg.programacion2.appfinanzas"
-    compileSdk = 34
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "edu.umg.programacion2.appfinanzas"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
