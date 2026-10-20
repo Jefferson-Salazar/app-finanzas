@@ -7,14 +7,15 @@
     android:background="#F4F7F6">
 
     <!-- Encabezado -->
+
     <TextView
         android:id="@+id/tvBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bienvenido a Qallet"
+        android:textColor="#2C3E50"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#2C3E50" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvSubtitulo"
@@ -124,10 +125,11 @@
         android:id="@+id/btnNuevoMovimiento"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:text="+ Registrar Movimiento"
-        android:textSize="16sp"
-        android:textStyle="bold"
         android:backgroundTint="#27AE60"
-        android:textColor="#FFFFFF" />
+        android:rotationX="-3"
+        android:text="+ Registrar Movimiento"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
