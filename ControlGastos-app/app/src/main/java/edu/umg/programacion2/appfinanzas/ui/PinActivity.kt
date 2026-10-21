@@ -7,7 +7,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import edu.umg.programacion2.appfinanzas.R
-import edu.umg.programacion2.appfinanzas.dao.Database
 
 class PinActivity : AppCompatActivity() {
 
@@ -17,7 +16,6 @@ class PinActivity : AppCompatActivity() {
 
         val etPin = findViewById<EditText>(R.id.etPin)
         val btnIngresarPin = findViewById<Button>(R.id.btnIngresarPin)
-        val db = Database(this)
 
         btnIngresarPin.setOnClickListener {
             val pinIngresado = etPin.text.toString().trim()
@@ -27,12 +25,12 @@ class PinActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (db.validarPin(pinIngresado)) {
+            if (pinIngresado == "1234") {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "PIN incorrecto", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "PIN incorrecto (usa 1234 para probar)", Toast.LENGTH_SHORT).show()
                 etPin.text.clear()
             }
         }
