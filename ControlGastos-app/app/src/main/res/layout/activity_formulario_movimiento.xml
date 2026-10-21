@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Movimiento"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <EditText
+        android:id="@+id/etConcepto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Concepto (ej. Salario, Almuerzo)"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etMonto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monto (Q)"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgTipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <RadioButton
+            android:id="@+id/rbIngreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingreso"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbGasto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="Gasto"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar Movimiento"
+        android:backgroundTint="#27AE60"/>
+</LinearLayout>

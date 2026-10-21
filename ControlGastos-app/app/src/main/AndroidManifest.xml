@@ -33,6 +33,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".ui.FormularioMovimientoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        
     </application>
 
 </manifest>

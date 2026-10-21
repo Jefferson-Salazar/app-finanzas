@@ -1,5 +1,6 @@
 package edu.umg.programacion2.appfinanzas.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         btnNuevoMovimiento = findViewById(R.id.btnNuevoMovimiento)
 
         btnNuevoMovimiento.setOnClickListener {
-            Toast.makeText(this, "Próximamente: Formulario de Registro", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, FormularioMovimientoActivity::class.java)
+            startActivity(intent)
         }
 
         actualizarResumenFinanciero()
