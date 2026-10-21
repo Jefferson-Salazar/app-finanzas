@@ -1,4 +1,4 @@
-package edu.umg.programacion2.appfinanzas.modelo
+package edu.umg.programacion2.appfinanzas.datos
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
