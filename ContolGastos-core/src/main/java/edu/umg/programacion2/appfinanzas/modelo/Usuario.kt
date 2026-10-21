@@ -1,4 +1,4 @@
-package edu.umg.programacion2.appfinanzas.model
+package edu.umg.programacion2.appfinanzas.modelo
 
 data class Usuario(
     val id: Int,
