@@ -18,27 +18,13 @@
         android:textColor="#2C3E50"
         android:layout_marginBottom="24dp"/>
 
-    <EditText
-        android:id="@+id/etConcepto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Concepto (ej. Salario, Almuerzo)"
-        android:layout_marginBottom="16dp"/>
-
-    <EditText
-        android:id="@+id/etMonto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Monto (Q)"
-        android:inputType="numberDecimal"
-        android:layout_marginBottom="16dp"/>
-
+    <!-- Tipo de Movimiento (Ingreso / Gasto) -->
     <RadioGroup
         android:id="@+id/rgTipo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="16dp">
 
         <RadioButton
             android:id="@+id/rbIngreso"
@@ -54,6 +40,37 @@
             android:layout_marginStart="24dp"
             android:text="Gasto"/>
     </RadioGroup>
+
+    <!-- Menú Desplegable de Categorías -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoría"
+        android:textSize="14sp"
+        android:textColor="#7F8C8D"
+        android:layout_marginBottom="4dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etConcepto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción opcional (ej. almuerzo con amigos)"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etMonto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monto (Q)"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="24dp"/>
 
     <Button
         android:id="@+id/btnGuardar"

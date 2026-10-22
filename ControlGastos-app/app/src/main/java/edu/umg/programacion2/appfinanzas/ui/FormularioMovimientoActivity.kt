@@ -1,56 +1,94 @@
 package edu.umg.programacion2.appfinanzas.ui
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import edu.umg.programacion2.appfinanzas.Dependencias
 import edu.umg.programacion2.appfinanzas.R
-import edu.umg.programacion2.appfinanzas.modelo.Transaccion
 import kotlinx.coroutines.launch
 
 class FormularioMovimientoActivity : AppCompatActivity() {
 
     private val repositorio = Dependencias.repositorio
 
+    private lateinit var rgTipo: RadioGroup
+    private lateinit var rbIngreso: RadioButton
+    private lateinit var spinnerCategoria: Spinner
+    private lateinit var etConcepto: EditText
+    private lateinit var etMonto: EditText
+    private lateinit var btnGuardar: Button
+
+    private val categoriasIngresos = listOf("Salario", "Ventas", "Transferencias", "Otros")
+    private val categoriasGastos = listOf("Alimentación", "Transporte", "Universidad", "Servicios", "Entretenimiento", "Otros")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_movimiento)
 
-        val etConcepto = findViewById<EditText>(R.id.etConcepto)
-        val etMonto = findViewById<EditText>(R.id.etMonto)
-        val rbIngreso = findViewById<RadioButton>(R.id.rbIngreso)
-        val btnGuardar = findViewById<Button>(R.id.btnGuardar)
+        rgTipo = findViewById(R.id.rgTipo)
+        rbIngreso = findViewById(R.id.rbIngreso)
+        spinnerCategoria = findViewById(R.id.spinnerCategoria)
+        etConcepto = findViewById(R.id.etConcepto)
+        etMonto = findViewById(R.id.etMonto)
+        btnGuardar = findViewById(R.id.btnGuardar)
+
+        // Configurar categorías iniciales
+        actualizarSpinner(categoriasIngresos)
+
+        // Cambiar las categorías del Spinner dinámicamente al alternar Ingreso/Gasto
+        rgTipo.setOnCheckedChangeListener { _, checkedId ->
+            if (checkedId == R.id.rbIngreso) {
+                actualizarSpinner(categoriasIngresos)
+            } else {
+                actualizarSpinner(categoriasGastos)
+            }
+        }
 
         btnGuardar.setOnClickListener {
-            val concepto = etConcepto.text.toString().trim()
-            val montoTexto = etMonto.text.toString().trim()
+            guardarMovimiento()
+        }
+    }
 
-            if (concepto.isEmpty() || montoTexto.isEmpty()) {
-                Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+    private fun actualizarSpinner(categorias: List<String>) {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categorias)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCategoria.adapter = adapter
+    }
 
-            val monto = montoTexto.toDoubleOrNull() ?: 0.0
-            val tipo = if (rbIngreso.isChecked) "INGRESO" else "GASTO"
+    private fun guardarMovimiento() {
+        val montoStr = etMonto.text.toString()
+        if (montoStr.isEmpty()) {
+            Toast.makeText(this, "Ingresa un monto válido", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-            val nuevaTransaccion = Transaccion(
-                id = 0,
-                usuarioId = 1,
-                descripcion = concepto,
-                monto = monto,
-                tipo = tipo,
-                categoria = "General",
-                fecha = "2026-10-21"
-            )
+        val monto = montoStr.toDoubleOrNull() ?: 0.0
+        val tipo = if (rbIngreso.isChecked) "INGRESO" else "GASTO"
+        val categoria = spinnerCategoria.selectedItem.toString()
+        val descripcion = etConcepto.text.toString()
 
-            lifecycleScope.launch {
-                repositorio.agregar(nuevaTransaccion)
-                Toast.makeText(this@FormularioMovimientoActivity, "¡Movimiento guardado!", Toast.LENGTH_SHORT).show()
+        // Concepto final combinando categoría y descripción opcional
+        val conceptoFinal = if (descripcion.isBlank()) categoria else "$categoria: $descripcion"
+
+        // Fecha automática del sistema en milisegundos
+        val fechaSistema = System.currentTimeMillis()
+        val userId = 1 // ID por defecto para la sesión actual
+
+        lifecycleScope.launch {
+            try {
+
+                Toast.makeText(this@FormularioMovimientoActivity, "Movimiento guardado con éxito", Toast.LENGTH_SHORT).show()
                 finish()
+            } catch (e: Exception) {
+                Toast.makeText(this@FormularioMovimientoActivity, "Error al guardar: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
