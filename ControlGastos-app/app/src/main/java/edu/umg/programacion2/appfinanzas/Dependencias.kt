@@ -3,7 +3,6 @@ package edu.umg.programacion2.appfinanzas
 import android.content.Context
 import androidx.room.Room
 import edu.umg.programacion2.appfinanzas.datos.AppDatabase
-import edu.umg.programacion2.appfinanzas.datos.TransaccionRepositoryRoom
 
 /**
  * Contenedor Singleton de dependencias compartidas para toda la aplicación.
@@ -14,7 +13,7 @@ object Dependencias {
     lateinit var database: AppDatabase
         private set
 
-    lateinit var repositorio: TransaccionRepositoryRoom
+    lateinit var repositorio: `TransaccionRepositoryRoom.kt`
         private set
 
     fun iniciar(context: Context) {
@@ -26,6 +25,6 @@ object Dependencias {
         ).build()
 
         // Inicializa el repositorio pasándole el DAO correspondiente
-        repositorio = TransaccionRepositoryRoom(database.transaccionDao())
+        repositorio = `TransaccionRepositoryRoom.kt`(database.transaccionDao())
     }
 }

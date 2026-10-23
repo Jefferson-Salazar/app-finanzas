@@ -14,4 +14,5 @@ kotlin {
 
 dependencies {
     implementation("org.xerial:sqlite-jdbc:3.42.0.0")
+    testImplementation(libs.junit.junit)
 }

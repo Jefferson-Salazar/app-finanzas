@@ -75,7 +75,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         val descripcion = etConcepto.text.toString()
 
         // Concepto final combinando categoría y descripción opcional
-        val conceptoFinal = if (descripcion.isBlank()) categoria else "$categoria: $descripcion"
+        val conceptoFinal = if (descripcion.isBlank()) categoria else "$descripcion"
 
         // Fecha automática del sistema en milisegundos convertida a String
         val fechaSistema = System.currentTimeMillis().toString()
