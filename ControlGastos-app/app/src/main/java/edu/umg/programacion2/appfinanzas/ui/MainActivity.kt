@@ -1,11 +1,9 @@
 package edu.umg.programacion2.appfinanzas.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import edu.umg.programacion2.appfinanzas.Dependencias
@@ -25,43 +23,67 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Vincular vistas con sus IDs del XML
         tvBalanceTotal = findViewById(R.id.tvBalanceTotal)
         tvIngresosTotal = findViewById(R.id.tvIngresosTotal)
         tvGastosTotal = findViewById(R.id.tvGastosTotal)
         btnNuevoMovimiento = findViewById(R.id.btnNuevoMovimiento)
 
+        // Botón para abrir el formulario de nuevo movimiento
         btnNuevoMovimiento.setOnClickListener {
             val intent = Intent(this, FormularioMovimientoActivity::class.java)
             startActivity(intent)
         }
-
-        actualizarResumenFinanciero()
     }
 
     override fun onResume() {
         super.onResume()
-        actualizarResumenFinanciero()
+        // Recargar el resumen financiero al regresar a la pantalla principal
+        cargarResumenFinanciero()
     }
 
-    private fun actualizarResumenFinanciero() {
-        val userId = 1
-
-        // Usamos lifecycleScope.launch porque las consultas a Room son suspend
+    private fun cargarResumenFinanciero() {
         lifecycleScope.launch {
-            val transacciones = repositorio.listar(userId)
+            try {
+                // Obtener transacciones del usuario 1 desde Room
+                val transacciones = repositorio.listar(1)
 
-            val totalIngresos = transacciones.filter { it.tipo == "INGRESO" }.sumOf { it.monto }
-            val totalGastos = transacciones.filter { it.tipo == "GASTO" }.sumOf { it.monto }
-            val balanceGeneral = totalIngresos - totalGastos
+                var totalIngresos = 0.0
+                var totalGastos = 0.0
 
-            tvIngresosTotal.text = String.format("Q %.2f", totalIngresos)
-            tvGastosTotal.text = String.format("Q %.2f", totalGastos)
-            tvBalanceTotal.text = String.format("Q %.2f", balanceGeneral)
+                for (t in transacciones) {
+                    if (t.tipo.equals("INGRESO", ignoreCase = true)) {
+                        totalIngresos += t.monto
+                    } else {
+                        totalGastos += t.monto
+                    }
+                }
 
-            if (balanceGeneral < 0) {
-                tvBalanceTotal.setTextColor(Color.parseColor("#E74C3C")) // Rojo
-            } else {
-                tvBalanceTotal.setTextColor(Color.parseColor("#27AE60")) // Verde Qallet
+                val balance = totalIngresos - totalGastos
+
+                // Formato en Quetzales (Q)
+                tvIngresosTotal.text = "Q %.2f".format(totalIngresos)
+                tvGastosTotal.text = "Q %.2f".format(totalGastos)
+                tvBalanceTotal.text = "Q %.2f".format(balance)
+
+                // Cambiar el color del Balance General según su valor
+                when {
+                    balance > 0 -> {
+                        // Verde para positivo
+                        tvBalanceTotal.setTextColor(android.graphics.Color.parseColor("#27AE60"))
+                    }
+                    balance < 0 -> {
+                        // Rojo para negativo
+                        tvBalanceTotal.setTextColor(android.graphics.Color.parseColor("#E74C3C"))
+                    }
+                    else -> {
+                        // Gris neutro para cero
+                        tvBalanceTotal.setTextColor(android.graphics.Color.parseColor("#7F8C8D"))
+                    }
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

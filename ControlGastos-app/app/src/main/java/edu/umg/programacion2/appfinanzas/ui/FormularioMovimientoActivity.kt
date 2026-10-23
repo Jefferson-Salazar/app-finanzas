@@ -1,7 +1,6 @@
 package edu.umg.programacion2.appfinanzas.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -43,7 +42,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         // Configurar categorías iniciales
         actualizarSpinner(categoriasIngresos)
 
-        // Cambiar las categorías del Spinner dinámicamente al alternar Ingreso/Gasto
+        // Cambiar las categorías
         rgTipo.setOnCheckedChangeListener { _, checkedId ->
             if (checkedId == R.id.rbIngreso) {
                 actualizarSpinner(categoriasIngresos)
@@ -78,14 +77,28 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         // Concepto final combinando categoría y descripción opcional
         val conceptoFinal = if (descripcion.isBlank()) categoria else "$categoria: $descripcion"
 
-        // Fecha automática del sistema en milisegundos
-        val fechaSistema = System.currentTimeMillis()
-        val userId = 1 // ID por defecto para la sesión actual
+        // Fecha automática del sistema en milisegundos convertida a String
+        val fechaSistema = System.currentTimeMillis().toString()
+        val usuarioIdFijo = 1 // ID del usuario actual
+
+        val nuevaTransaccion = edu.umg.programacion2.appfinanzas.modelo.Transaccion(
+            id = 0,
+            usuarioId = usuarioIdFijo,
+            tipo = tipo,
+            monto = monto,
+            categoria = categoria,
+            descripcion = conceptoFinal,
+            fecha = fechaSistema
+        )
 
         lifecycleScope.launch {
             try {
+                // Guardamos el movimiento en la base de datos a través de Room
+                repositorio.agregar(nuevaTransaccion)
 
-                Toast.makeText(this@FormularioMovimientoActivity, "Movimiento guardado con éxito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@FormularioMovimientoActivity, "¡Movimiento guardado con éxito!", Toast.LENGTH_SHORT).show()
+
+                // Cerramos la actividad para regresar al MainActivity y actualizar los totales
                 finish()
             } catch (e: Exception) {
                 Toast.makeText(this@FormularioMovimientoActivity, "Error al guardar: ${e.message}", Toast.LENGTH_LONG).show()
