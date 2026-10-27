@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,12 +18,14 @@ class FormularioMovimientoActivity : AppCompatActivity() {
 
     private val repositorio = Dependencias.repositorio
 
-    private lateinit var rgTipo: RadioGroup
-    private lateinit var rbIngreso: RadioButton
+    private lateinit var tvTituloFormulario: TextView
     private lateinit var spinnerCategoria: Spinner
     private lateinit var etConcepto: EditText
     private lateinit var etMonto: EditText
     private lateinit var btnGuardar: Button
+    private lateinit var btnRegresar: ImageButton
+
+    private var tipoMovimientoActual = "INGRESO"
 
     private val categoriasIngresos = listOf("Salario", "Ventas", "Transferencias", "Otros")
     private val categoriasGastos = listOf("Alimentación", "Transporte", "Universidad", "Servicios", "Entretenimiento", "Otros")
@@ -32,23 +34,28 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_movimiento)
 
-        rgTipo = findViewById(R.id.rgTipo)
-        rbIngreso = findViewById(R.id.rbIngreso)
+        tvTituloFormulario = findViewById(R.id.tvTituloFormulario)
         spinnerCategoria = findViewById(R.id.spinnerCategoria)
         etConcepto = findViewById(R.id.etConcepto)
         etMonto = findViewById(R.id.etMonto)
         btnGuardar = findViewById(R.id.btnGuardar)
+        btnRegresar = findViewById(R.id.btnRegresar)
 
-        // Configurar categorías iniciales
-        actualizarSpinner(categoriasIngresos)
+        // Recibir el tipo de movimiento enviado desde el botón principal
+        tipoMovimientoActual = intent.getStringExtra("TIPO_MOVIMIENTO") ?: "INGRESO"
 
-        // Cambiar las categorías
-        rgTipo.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rbIngreso) {
-                actualizarSpinner(categoriasIngresos)
-            } else {
-                actualizarSpinner(categoriasGastos)
-            }
+        // Configurar título y categorías de forma dinámica
+        if (tipoMovimientoActual.equals("INGRESO", ignoreCase = true)) {
+            tvTituloFormulario.text = "Nuevo Ingreso"
+            actualizarSpinner(categoriasIngresos)
+        } else {
+            tvTituloFormulario.text = "Nuevo Egreso"
+            actualizarSpinner(categoriasGastos)
+        }
+
+        // Botón de retroceso f
+        btnRegresar.setOnClickListener {
+            finish()
         }
 
         btnGuardar.setOnClickListener {
@@ -57,6 +64,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
     }
 
     private fun actualizarSpinner(categorias: List<String>) {
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categorias)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerCategoria.adapter = adapter
@@ -70,21 +78,17 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         }
 
         val monto = montoStr.toDoubleOrNull() ?: 0.0
-        val tipo = if (rbIngreso.isChecked) "INGRESO" else "GASTO"
         val categoria = spinnerCategoria.selectedItem.toString()
         val descripcion = etConcepto.text.toString()
 
-        // Concepto final combinando categoría y descripción opcional
-        val conceptoFinal = if (descripcion.isBlank()) categoria else "$descripcion"
-
-        // Fecha automática del sistema en milisegundos convertida a String
+        val conceptoFinal = if (descripcion.isBlank()) categoria else descripcion
         val fechaSistema = System.currentTimeMillis().toString()
-        val usuarioIdFijo = 1 // ID del usuario actual
+        val usuarioIdFijo = 1
 
         val nuevaTransaccion = edu.umg.programacion2.appfinanzas.modelo.Transaccion(
             id = 0,
             usuarioId = usuarioIdFijo,
-            tipo = tipo,
+            tipo = tipoMovimientoActual,
             monto = monto,
             categoria = categoria,
             descripcion = conceptoFinal,
@@ -93,12 +97,8 @@ class FormularioMovimientoActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // Guardamos el movimiento en la base de datos a través de Room
                 repositorio.agregar(nuevaTransaccion)
-
                 Toast.makeText(this@FormularioMovimientoActivity, "¡Movimiento guardado con éxito!", Toast.LENGTH_SHORT).show()
-
-                // Cerramos la actividad para regresar al MainActivity y actualizar los totales
                 finish()
             } catch (e: Exception) {
                 Toast.makeText(this@FormularioMovimientoActivity, "Error al guardar: ${e.message}", Toast.LENGTH_LONG).show()

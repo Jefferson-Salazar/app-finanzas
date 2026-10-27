@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvBalanceTotal: TextView
     private lateinit var tvIngresosTotal: TextView
     private lateinit var tvGastosTotal: TextView
-    private lateinit var btnNuevoMovimiento: Button
+    private lateinit var btnRegistrarIngreso: Button
+    private lateinit var btnRegistrarGasto: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var transaccionAdapter: TransaccionAdapter
 
@@ -32,15 +33,25 @@ class MainActivity : AppCompatActivity() {
         tvBalanceTotal = findViewById(R.id.tvBalanceTotal)
         tvIngresosTotal = findViewById(R.id.tvIngresosTotal)
         tvGastosTotal = findViewById(R.id.tvGastosTotal)
-        btnNuevoMovimiento = findViewById(R.id.btnNuevoMovimiento)
+        btnRegistrarIngreso = findViewById(R.id.btnRegistrarIngreso)
+        btnRegistrarGasto = findViewById(R.id.btnRegistrarGasto)
         recyclerView = findViewById(R.id.recyclerTransacciones)
 
         transaccionAdapter = TransaccionAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = transaccionAdapter
 
-        btnNuevoMovimiento.setOnClickListener {
+        // Botón para Registrar Ingreso
+        btnRegistrarIngreso.setOnClickListener {
             val intent = Intent(this, FormularioMovimientoActivity::class.java)
+            intent.putExtra("TIPO_MOVIMIENTO", "INGRESO")
+            startActivity(intent)
+        }
+
+        // Botón para Registrar Gasto
+        btnRegistrarGasto.setOnClickListener {
+            val intent = Intent(this, FormularioMovimientoActivity::class.java)
+            intent.putExtra("TIPO_MOVIMIENTO", "GASTO")
             startActivity(intent)
         }
     }

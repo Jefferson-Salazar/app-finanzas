@@ -7,7 +7,7 @@
     android:gravity="center_vertical"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Categoría y Concepto -->
+    <!-- Categoría, Concepto y Fecha -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,6 +30,16 @@
             android:textSize="14sp"
             android:textColor="#7F8C8D"
             android:text="Descripción o concepto" />
+
+        <!-- Nuevo campo para la fecha -->
+        <TextView
+            android:id="@+id/tvItemFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#95A5A6"
+            android:layout_marginTop="2dp"
+            android:text="Fecha" />
     </LinearLayout>
 
     <!-- Monto -->
