@@ -32,6 +32,10 @@
             android:name=".ui.FormularioMovimientoActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.HistorialActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

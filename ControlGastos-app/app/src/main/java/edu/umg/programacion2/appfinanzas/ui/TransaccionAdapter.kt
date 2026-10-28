@@ -1,5 +1,6 @@
 package edu.umg.programacion2.appfinanzas.ui
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import edu.umg.programacion2.appfinanzas.R
 import edu.umg.programacion2.appfinanzas.modelo.Transaccion
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -17,7 +19,7 @@ class TransaccionAdapter(private var listaTransacciones: List<Transaccion>) : Re
         val tvCategoria: TextView = view.findViewById(R.id.tvItemCategoria)
         val tvConcepto: TextView = view.findViewById(R.id.tvItemConcepto)
         val tvMonto: TextView = view.findViewById(R.id.tvItemMonto)
-        val tvFecha: TextView = view.findViewById(R.id.tvItemFecha) // Vinculado al nuevo campo de fecha
+        val tvFecha: TextView = view.findViewById(R.id.tvItemFecha)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,9 +32,24 @@ class TransaccionAdapter(private var listaTransacciones: List<Transaccion>) : Re
 
         holder.tvCategoria.text = transaccion.categoria
         holder.tvConcepto.text = transaccion.descripcion
-        holder.tvMonto.text = "Q %.2f".format(transaccion.monto)
 
-        // Aquí formateamos y asignamos la fecha legible
+        // Formato con separadores de miles y dos decimales
+        val formatoMoneda = NumberFormat.getNumberInstance(Locale.US).apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+        }
+        val montoFormateado = formatoMoneda.format(transaccion.monto)
+
+        // Evaluar si es Ingreso o Gasto para asignar signo y color
+        if (transaccion.tipo.equals("INGRESO", ignoreCase = true)) {
+            holder.tvMonto.text = "Q $montoFormateado"
+            holder.tvMonto.setTextColor(Color.parseColor("#27AE60")) // Verde
+        } else {
+            holder.tvMonto.text = "- Q $montoFormateado"
+            holder.tvMonto.setTextColor(Color.parseColor("#E74C3C")) // Rojo
+        }
+
+        // Formatear y asignar la fecha legible
         holder.tvFecha.text = formatearFecha(transaccion.fecha)
     }
 
