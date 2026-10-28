@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRegistrarIngreso: Button
     private lateinit var btnRegistrarGasto: Button
     private lateinit var btnVerHistorial: Button
+    private lateinit var btnOcultarSaldo: ImageButton
+
+    // Inicia en true para que por defecto aparezca oculto
+    private var saldoOculto = true
+    private var balanceUltimo: String = "Q 0.00"
+    private var ingresosUltimo: String = "Q 0.00"
+    private var gastosUltimo: String = "Q 0.00"
+    private var balanceColorActual: Int = Color.parseColor("#7F8C8D")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         btnRegistrarIngreso = findViewById(R.id.btnRegistrarIngreso)
         btnRegistrarGasto = findViewById(R.id.btnRegistrarGasto)
         btnVerHistorial = findViewById(R.id.btnVerHistorial)
+        btnOcultarSaldo = findViewById(R.id.btnOcultarSaldo)
 
         btnRegistrarIngreso.setOnClickListener {
             val intent = Intent(this, FormularioMovimientoActivity::class.java)
@@ -50,6 +60,32 @@ class MainActivity : AppCompatActivity() {
         btnVerHistorial.setOnClickListener {
             val intent = Intent(this, HistorialActivity::class.java)
             startActivity(intent)
+        }
+
+        // Evento del botón Ojo para alternar visibilidad de montos
+        btnOcultarSaldo.setOnClickListener {
+            saldoOculto = !saldoOculto
+            val colorGris = Color.parseColor("#7F8C8D")
+
+            if (saldoOculto) {
+                tvBalanceTotal.text = "Q *****"
+                tvIngresosTotal.text = "Q *****"
+                tvGastosTotal.text = "Q *****"
+
+                // Poner todos en gris cuando sean asteriscos
+                tvBalanceTotal.setTextColor(colorGris)
+                tvIngresosTotal.setTextColor(colorGris)
+                tvGastosTotal.setTextColor(colorGris)
+            } else {
+                tvBalanceTotal.text = balanceUltimo
+                tvIngresosTotal.text = ingresosUltimo
+                tvGastosTotal.text = gastosUltimo
+
+                // Restaurar colores originales
+                tvBalanceTotal.setTextColor(balanceColorActual)
+                tvIngresosTotal.setTextColor(Color.parseColor("#27AE60"))
+                tvGastosTotal.setTextColor(Color.parseColor("#E74C3C"))
+            }
         }
     }
 
@@ -81,14 +117,35 @@ class MainActivity : AppCompatActivity() {
 
                 val balance = totalIngresos - totalGastos
 
-                tvIngresosTotal.text = "Q ${formatoMoneda.format(totalIngresos)}"
-                tvGastosTotal.text = "Q ${formatoMoneda.format(totalGastos)}"
-                tvBalanceTotal.text = "Q ${formatoMoneda.format(balance)}"
+                ingresosUltimo = "Q ${formatoMoneda.format(totalIngresos)}"
+                gastosUltimo = "Q ${formatoMoneda.format(totalGastos)}"
+                balanceUltimo = "Q ${formatoMoneda.format(balance)}"
 
-                when {
-                    balance > 0.01 -> tvBalanceTotal.setTextColor(Color.parseColor("#27AE60"))
-                    balance < -0.01 -> tvBalanceTotal.setTextColor(Color.parseColor("#E74C3C"))
-                    else -> tvBalanceTotal.setTextColor(Color.parseColor("#7F8C8D"))
+                balanceColorActual = when {
+                    balance > 0.01 -> Color.parseColor("#27AE60")
+                    balance < -0.01 -> Color.parseColor("#E74C3C")
+                    else -> Color.parseColor("#7F8C8D")
+                }
+
+                val colorGris = Color.parseColor("#7F8C8D")
+
+                // Por defecto oculto con color gris en todas las tarjetas
+                if (saldoOculto) {
+                    tvBalanceTotal.text = "Q *****"
+                    tvIngresosTotal.text = "Q *****"
+                    tvGastosTotal.text = "Q *****"
+
+                    tvBalanceTotal.setTextColor(colorGris)
+                    tvIngresosTotal.setTextColor(colorGris)
+                    tvGastosTotal.setTextColor(colorGris)
+                } else {
+                    tvIngresosTotal.text = ingresosUltimo
+                    tvGastosTotal.text = gastosUltimo
+                    tvBalanceTotal.text = balanceUltimo
+
+                    tvBalanceTotal.setTextColor(balanceColorActual)
+                    tvIngresosTotal.setTextColor(Color.parseColor("#27AE60"))
+                    tvGastosTotal.setTextColor(Color.parseColor("#E74C3C"))
                 }
 
             } catch (e: Exception) {

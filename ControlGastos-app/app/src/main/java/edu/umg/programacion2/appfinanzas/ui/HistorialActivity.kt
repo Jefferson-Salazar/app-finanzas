@@ -84,9 +84,15 @@ class HistorialActivity : AppCompatActivity() {
         btnEliminarSeleccionados.setOnClickListener {
             val cantidad = transaccionAdapter.idsSeleccionados.size
             if (cantidad > 0) {
+                val mensaje = if (cantidad == 1) {
+                    "¿Seguro que quieres eliminar el elemento seleccionado? Esta acción es irreversible."
+                } else {
+                    "¿Seguro que quieres eliminar los $cantidad elementos seleccionados? Esta acción es irreversible."
+                }
+
                 AlertDialog.Builder(this)
                     .setTitle("Eliminar transacciones")
-                    .setMessage("¿Seguro que desea eliminar los $cantidad elementos seleccionados?")
+                    .setMessage(mensaje)
                     .setPositiveButton("Sí, eliminar") { _, _ ->
                         eliminarElementosSeleccionados()
                     }
