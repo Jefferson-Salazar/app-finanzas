@@ -1,5 +1,6 @@
 package edu.umg.programacion2.appfinanzas.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -35,7 +36,20 @@ class HistorialActivity : AppCompatActivity() {
         spinnerFiltro = findViewById(R.id.spinnerFiltro)
         recyclerView = findViewById(R.id.recyclerHistorial)
 
-        transaccionAdapter = TransaccionAdapter(emptyList())
+        // Inicializar el adaptador pasando la lista vacía y el evento de clic para editar
+        transaccionAdapter = TransaccionAdapter(emptyList()) { transaccionSeleccionada ->
+            val intent = Intent(this, FormularioMovimientoActivity::class.java).apply {
+                putExtra("EDITAR_MODO", true)
+                putExtra("TRANSACCION_ID", transaccionSeleccionada.id)
+                putExtra("TIPO_MOVIMIENTO", transaccionSeleccionada.tipo)
+                putExtra("CATEGORIA", transaccionSeleccionada.categoria)
+                putExtra("MONTO", transaccionSeleccionada.monto)
+                putExtra("DESCRIPCION", transaccionSeleccionada.descripcion)
+                putExtra("FECHA", transaccionSeleccionada.fecha)
+            }
+            startActivity(intent)
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = transaccionAdapter
 

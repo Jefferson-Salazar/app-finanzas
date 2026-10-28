@@ -13,7 +13,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TransaccionAdapter(private var listaTransacciones: List<Transaccion>) : RecyclerView.Adapter<TransaccionAdapter.ViewHolder>() {
+class TransaccionAdapter(
+    private var listaTransacciones: List<Transaccion>,
+    private val onClick: (Transaccion) -> Unit // <- Listener para hacer clic
+) : RecyclerView.Adapter<TransaccionAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvCategoria: TextView = view.findViewById(R.id.tvItemCategoria)
@@ -33,24 +36,26 @@ class TransaccionAdapter(private var listaTransacciones: List<Transaccion>) : Re
         holder.tvCategoria.text = transaccion.categoria
         holder.tvConcepto.text = transaccion.descripcion
 
-        // Formato con separadores de miles y dos decimales
         val formatoMoneda = NumberFormat.getNumberInstance(Locale.US).apply {
             minimumFractionDigits = 2
             maximumFractionDigits = 2
         }
         val montoFormateado = formatoMoneda.format(transaccion.monto)
 
-        // Evaluar si es Ingreso o Gasto para asignar signo y color
         if (transaccion.tipo.equals("INGRESO", ignoreCase = true)) {
-            holder.tvMonto.text = "Q $montoFormateado"
-            holder.tvMonto.setTextColor(Color.parseColor("#27AE60")) // Verde
+            holder.tvMonto.text = "+ Q $montoFormateado"
+            holder.tvMonto.setTextColor(Color.parseColor("#27AE60"))
         } else {
             holder.tvMonto.text = "- Q $montoFormateado"
-            holder.tvMonto.setTextColor(Color.parseColor("#E74C3C")) // Rojo
+            holder.tvMonto.setTextColor(Color.parseColor("#E74C3C"))
         }
 
-        // Formatear y asignar la fecha legible
         holder.tvFecha.text = formatearFecha(transaccion.fecha)
+
+        // Detectar clic en el ítem para editar/eliminar
+        holder.itemView.setOnClickListener {
+            onClick(transaccion)
+        }
     }
 
     override fun getItemCount(): Int = listaTransacciones.size
