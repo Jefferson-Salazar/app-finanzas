@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import edu.umg.programacion2.appfinanzas.R
@@ -15,10 +16,16 @@ import java.util.Locale
 
 class TransaccionAdapter(
     private var listaTransacciones: List<Transaccion>,
-    private val onClick: (Transaccion) -> Unit // <- Listener para hacer clic
+    private val onClick: (Transaccion) -> Unit,
+    private val onLongClick: () -> Unit,
+    private val onSelectionChanged: (Int) -> Unit
 ) : RecyclerView.Adapter<TransaccionAdapter.ViewHolder>() {
 
+    val idsSeleccionados = mutableSetOf<Int>()
+    var enModoSeleccion = false
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val checkbox: CheckBox = view.findViewById(R.id.checkboxSeleccion)
         val tvCategoria: TextView = view.findViewById(R.id.tvItemCategoria)
         val tvConcepto: TextView = view.findViewById(R.id.tvItemConcepto)
         val tvMonto: TextView = view.findViewById(R.id.tvItemMonto)
@@ -52,10 +59,59 @@ class TransaccionAdapter(
 
         holder.tvFecha.text = formatearFecha(transaccion.fecha)
 
-        // Detectar clic en el ítem para editar/eliminar
-        holder.itemView.setOnClickListener {
-            onClick(transaccion)
+        // Mostrar u ocultar checkbox según el modo selección
+        if (enModoSeleccion) {
+            holder.checkbox.visibility = View.VISIBLE
+            holder.checkbox.isChecked = idsSeleccionados.contains(transaccion.id)
+        } else {
+            holder.checkbox.visibility = View.GONE
+            holder.checkbox.isChecked = false
         }
+
+        // Clic normal
+        holder.itemView.setOnClickListener {
+            if (enModoSeleccion) {
+                toggleSeleccion(transaccion.id)
+            } else {
+                onClick(transaccion)
+            }
+        }
+
+        // Clic largo para activar modo selección
+        holder.itemView.setOnLongClickListener {
+            if (!enModoSeleccion) {
+                enModoSeleccion = true
+                onLongClick()
+            }
+            toggleSeleccion(transaccion.id)
+            true
+        }
+    }
+
+    private fun toggleSeleccion(id: Int) {
+        if (idsSeleccionados.contains(id)) {
+            idsSeleccionados.remove(id)
+        } else {
+            idsSeleccionados.add(id)
+        }
+        notifyDataSetChanged()
+        onSelectionChanged(idsSeleccionados.size)
+    }
+
+    fun seleccionarTodos() {
+        idsSeleccionados.clear()
+        for (t in listaTransacciones) {
+            idsSeleccionados.add(t.id)
+        }
+        notifyDataSetChanged()
+        onSelectionChanged(idsSeleccionados.size)
+    }
+
+    fun limpiarSeleccion() {
+        enModoSeleccion = false
+        idsSeleccionados.clear()
+        notifyDataSetChanged()
+        onSelectionChanged(0)
     }
 
     override fun getItemCount(): Int = listaTransacciones.size

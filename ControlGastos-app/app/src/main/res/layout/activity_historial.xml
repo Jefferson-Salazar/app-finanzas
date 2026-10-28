@@ -6,7 +6,7 @@
     android:padding="20dp"
     android:background="#F4F7F6">
 
-    <!-- Encabezado con botón de regresar -->
+    <!-- Encabezado con botón de regresar, título y botones de acción rápida -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,16 +24,39 @@
             android:contentDescription="Regresar" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Historial de Movimientos"
-            android:textSize="22sp"
+            android:layout_weight="1"
+            android:text="Historial"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#1E293B"
-            android:layout_marginStart="12dp"/>
+            android:layout_marginStart="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"/>
+
+        <!-- Botón Seleccionar Todo (Arriba a la derecha, inicialmente oculto) -->
+        <ImageButton
+            android:id="@+id/btnSeleccionarTodo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_agenda"
+            android:visibility="gone"
+            android:contentDescription="Seleccionar todo" />
+
+        <!-- Botón Eliminar Seleccionados (Arriba a la derecha, inicialmente oculto) -->
+        <ImageButton
+            android:id="@+id/btnEliminarSeleccionados"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            android:visibility="gone"
+            android:contentDescription="Eliminar seleccionados" />
     </LinearLayout>
 
-    <!-- Filtro-->
+    <!-- Filtro -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

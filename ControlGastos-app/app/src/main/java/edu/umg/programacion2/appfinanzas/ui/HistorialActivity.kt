@@ -7,6 +7,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +23,8 @@ class HistorialActivity : AppCompatActivity() {
     private val repositorio = Dependencias.repositorio
 
     private lateinit var btnRegresar: ImageButton
+    private lateinit var btnEliminarSeleccionados: ImageButton
+    private lateinit var btnSeleccionarTodo: ImageButton
     private lateinit var spinnerFiltro: Spinner
     private lateinit var recyclerView: RecyclerView
     private lateinit var transaccionAdapter: TransaccionAdapter
@@ -33,27 +37,63 @@ class HistorialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_historial)
 
         btnRegresar = findViewById(R.id.btnRegresarHistorial)
+        btnEliminarSeleccionados = findViewById(R.id.btnEliminarSeleccionados) // Bote de basura arriba a la derecha
+        btnSeleccionarTodo = findViewById(R.id.btnSeleccionarTodo) // Botón para seleccionar todo arriba a la derecha
         spinnerFiltro = findViewById(R.id.spinnerFiltro)
         recyclerView = findViewById(R.id.recyclerHistorial)
 
-        // Inicializar el adaptador pasando la lista vacía y el evento de clic para editar
-        transaccionAdapter = TransaccionAdapter(emptyList()) { transaccionSeleccionada ->
-            val intent = Intent(this, FormularioMovimientoActivity::class.java).apply {
-                putExtra("EDITAR_MODO", true)
-                putExtra("TRANSACCION_ID", transaccionSeleccionada.id)
-                putExtra("TIPO_MOVIMIENTO", transaccionSeleccionada.tipo)
-                putExtra("CATEGORIA", transaccionSeleccionada.categoria)
-                putExtra("MONTO", transaccionSeleccionada.monto)
-                putExtra("DESCRIPCION", transaccionSeleccionada.descripcion)
-                putExtra("FECHA", transaccionSeleccionada.fecha)
+        transaccionAdapter = TransaccionAdapter(
+            listaTransacciones = emptyList(),
+            onClick = { transaccionSeleccionada ->
+                // Clic normal: Abrir edición pasando TODOS los datos correctamente
+                val intent = Intent(this, FormularioMovimientoActivity::class.java).apply {
+                    putExtra("EDITAR_MODO", true)
+                    putExtra("TRANSACCION_ID", transaccionSeleccionada.id)
+                    putExtra("TIPO_MOVIMIENTO", transaccionSeleccionada.tipo)
+                    putExtra("CATEGORIA", transaccionSeleccionada.categoria)
+                    putExtra("MONTO", transaccionSeleccionada.monto)
+                    putExtra("DESCRIPCION", transaccionSeleccionada.descripcion)
+                    putExtra("FECHA", transaccionSeleccionada.fecha)
+                }
+                startActivity(intent)
+            },
+            onLongClick = {
+                // Al hacer clic largo, mostramos los botones superiores
+                btnEliminarSeleccionados.visibility = View.VISIBLE
+                btnSeleccionarTodo.visibility = View.VISIBLE
+            },
+            onSelectionChanged = { cantidad ->
+                if (cantidad == 0 && !transaccionAdapter.enModoSeleccion) {
+                    btnEliminarSeleccionados.visibility = View.GONE
+                    btnSeleccionarTodo.visibility = View.GONE
+                }
             }
-            startActivity(intent)
-        }
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = transaccionAdapter
 
         btnRegresar.setOnClickListener { finish() }
+
+        // Botón Seleccionar Todo
+        btnSeleccionarTodo.setOnClickListener {
+            transaccionAdapter.seleccionarTodos()
+        }
+
+        // Botón Eliminar con Diálogo de Confirmación
+        btnEliminarSeleccionados.setOnClickListener {
+            val cantidad = transaccionAdapter.idsSeleccionados.size
+            if (cantidad > 0) {
+                AlertDialog.Builder(this)
+                    .setTitle("Eliminar transacciones")
+                    .setMessage("¿Seguro que desea eliminar los $cantidad elementos seleccionados?")
+                    .setPositiveButton("Sí, eliminar") { _, _ ->
+                        eliminarElementosSeleccionados()
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }
+        }
 
         // Configurar Spinner de filtros
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opcionesFiltro)
@@ -77,7 +117,6 @@ class HistorialActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 listaCompleta = repositorio.listar(1)
-                // Aplicar el filtro actual al recargar
                 val filtroActual = spinnerFiltro.selectedItem?.toString() ?: "Todos"
                 filtrarTransacciones(filtroActual)
             } catch (e: Exception) {
@@ -90,8 +129,27 @@ class HistorialActivity : AppCompatActivity() {
         val listaFiltrada = when (tipoFiltro) {
             "Ingresos" -> listaCompleta.filter { it.tipo.equals("INGRESO", ignoreCase = true) }
             "Gastos" -> listaCompleta.filter { it.tipo.equals("GASTO", ignoreCase = true) }
-            else -> listaCompleta // "Todos"
+            else -> listaCompleta
         }
         transaccionAdapter.actualizarListanuevas(listaFiltrada)
+    }
+
+    private fun eliminarElementosSeleccionados() {
+        val idsAEliminar = transaccionAdapter.idsSeleccionados.toList()
+        lifecycleScope.launch {
+            try {
+                for (id in idsAEliminar) {
+                    repositorio.eliminar(id)
+                }
+                Toast.makeText(this@HistorialActivity, "Transacciones eliminadas", Toast.LENGTH_SHORT).show()
+                transaccionAdapter.limpiarSeleccion()
+                btnEliminarSeleccionados.visibility = View.GONE
+                btnSeleccionarTodo.visibility = View.GONE
+                cargarDatos()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@HistorialActivity, "Error al eliminar", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

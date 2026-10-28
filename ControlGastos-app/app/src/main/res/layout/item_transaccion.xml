@@ -1,13 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="12dp"
     android:gravity="center_vertical"
+    android:padding="12dp"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Categoría, Concepto y Fecha -->
+    <!-- Checkbox para selección múltiple  -->
+    <CheckBox
+        android:id="@+id/checkboxSeleccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- contenido existente -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,39 +25,32 @@
 
         <TextView
             android:id="@+id/tvItemCategoria"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="Categoría" />
+            android:textColor="#1E293B"/>
 
         <TextView
             android:id="@+id/tvItemConcepto"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="#7F8C8D"
-            android:text="Descripción o concepto" />
+            android:textColor="#64748B"/>
 
-        <!-- Nuevo campo para la fecha -->
         <TextView
             android:id="@+id/tvItemFecha"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="#95A5A6"
-            android:layout_marginTop="2dp"
-            android:text="Fecha" />
+            android:textColor="#94A3B8"/>
     </LinearLayout>
 
-    <!-- Monto -->
     <TextView
         android:id="@+id/tvItemMonto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="Q 0.00" />
+        android:textStyle="bold"/>
 
 </LinearLayout>
