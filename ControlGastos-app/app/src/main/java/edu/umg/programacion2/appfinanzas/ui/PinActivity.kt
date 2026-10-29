@@ -1,5 +1,6 @@
 package edu.umg.programacion2.appfinanzas.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -12,27 +13,35 @@ class PinActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
+        val estaRegistrado = prefs.getBoolean("is_registered", false)
+
+        // Si no se ha registrado entra directo a MainActivity la primera vez
+        if (!estaRegistrado) {
+            irAMain()
+            return
+        }
+
         setContentView(R.layout.activity_pin)
 
         val etPin = findViewById<EditText>(R.id.etPin)
-        val btnIngresarPin = findViewById<Button>(R.id.btnIngresarPin)
+        val btnDesbloquear = findViewById<Button>(R.id.btnConfirmarPin)
+        val pinGuardado = prefs.getString("user_pin", "")
 
-        btnIngresarPin.setOnClickListener {
+        btnDesbloquear.setOnClickListener {
             val pinIngresado = etPin.text.toString().trim()
-
-            if (pinIngresado.length != 4) {
-                Toast.makeText(this, "El PIN debe ser de 4 digitos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (pinIngresado == "1234") {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+            if (pinIngresado == pinGuardado) {
+                irAMain()
             } else {
-                Toast.makeText(this, "PIN incorrecto (usa 1234 para probar)", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "PIN incorrecto", Toast.LENGTH_SHORT).show()
                 etPin.text.clear()
             }
         }
+    }
+
+    private fun irAMain() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

@@ -1,11 +1,14 @@
 package edu.umg.programacion2.appfinanzas.ui
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import edu.umg.programacion2.appfinanzas.Dependencias
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRegistrarIngreso: Button
     private lateinit var btnRegistrarGasto: Button
     private lateinit var btnVerHistorial: Button
+    private lateinit var btnRegistrarseMain: Button
     private lateinit var btnOcultarSaldo: ImageButton
 
     // Inicia en true para que por defecto aparezca oculto
@@ -43,22 +47,24 @@ class MainActivity : AppCompatActivity() {
         btnRegistrarIngreso = findViewById(R.id.btnRegistrarIngreso)
         btnRegistrarGasto = findViewById(R.id.btnRegistrarGasto)
         btnVerHistorial = findViewById(R.id.btnVerHistorial)
+        btnRegistrarseMain = findViewById(R.id.btnRegistrarseMain)
         btnOcultarSaldo = findViewById(R.id.btnOcultarSaldo)
 
         btnRegistrarIngreso.setOnClickListener {
-            val intent = Intent(this, FormularioMovimientoActivity::class.java)
-            intent.putExtra("TIPO_MOVIMIENTO", "INGRESO")
-            startActivity(intent)
+            verificarYProceder("INGRESO")
         }
 
         btnRegistrarGasto.setOnClickListener {
-            val intent = Intent(this, FormularioMovimientoActivity::class.java)
-            intent.putExtra("TIPO_MOVIMIENTO", "GASTO")
-            startActivity(intent)
+            verificarYProceder("GASTO")
         }
 
         btnVerHistorial.setOnClickListener {
             val intent = Intent(this, HistorialActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnRegistrarseMain.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
@@ -92,6 +98,36 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         cargarResumenFinanciero()
+
+        // Comprobar si ya está registrado para mostrar u ocultar el botón de registro
+        val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
+        val estaRegistrado = prefs.getBoolean("is_registered", false)
+        if (estaRegistrado) {
+            btnRegistrarseMain.visibility = View.GONE
+        } else {
+            btnRegistrarseMain.visibility = View.VISIBLE
+        }
+    }
+
+    private fun verificarYProceder(tipoMovimiento: String) {
+        val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
+        val estaRegistrado = prefs.getBoolean("is_registered", false)
+
+        if (!estaRegistrado) {
+            AlertDialog.Builder(this)
+                .setTitle("Registro Requerido")
+                .setMessage("No puedes registrar movimientos sin estar registrado. ¿Deseas registrarte ahora?")
+                .setPositiveButton("Registrarse") { _, _ ->
+                    val intent = Intent(this, RegisterActivity::class.java)
+                    startActivity(intent)
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+        } else {
+            val intent = Intent(this, FormularioMovimientoActivity::class.java)
+            intent.putExtra("TIPO_MOVIMIENTO", tipoMovimiento)
+            startActivity(intent)
+        }
     }
 
     private fun cargarResumenFinanciero() {

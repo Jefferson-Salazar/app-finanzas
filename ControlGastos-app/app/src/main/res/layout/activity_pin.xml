@@ -4,45 +4,55 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp"
-    android:background="#F8FAFC">
+    android:padding="24dp"
+    android:background="#F4F7F6">
 
+    <!-- Icono o título de seguridad -->
     <TextView
+        android:id="@+id/tvTituloPin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Qallet"
-        android:textSize="36sp"
+        android:text="Seguridad App Finanzas"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="#1E293B" />
+        android:textColor="#1E293B"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
+        android:id="@+id/tvSubtituloPin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingresa tu PIN de 4 digitos"
-        android:textSize="16sp"
+        android:text="Ingresa tu PIN de acceso"
+        android:textSize="14sp"
         android:textColor="#64748B"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="24dp"
+        android:gravity="center"/>
 
+    <!-- Campo de texto para el PIN -->
     <EditText
         android:id="@+id/etPin"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:hint="****"
+        android:layout_width="220dp"
+        android:layout_height="55dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:hint="••••"
+        android:textColorHint="#94A3B8"
         android:inputType="numberPassword"
         android:maxLength="4"
-        android:gravity="center"
-        android:textSize="28sp"
-        android:background="@android:drawable/edit_text"
-        android:padding="12dp" />
+        android:textSize="24sp"
+        android:textColor="#1E293B"
+        android:layout_marginBottom="20dp"
+        android:elevation="2dp"/>
 
+    <!-- Botón de acción -->
     <Button
-        android:id="@+id/btnIngresarPin"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Ingresar"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="#10B981"
-        android:textColor="#FFFFFF" />
+        android:id="@+id/btnConfirmarPin"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#27AE60"
+        android:text="Desbloquear"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
 </LinearLayout>

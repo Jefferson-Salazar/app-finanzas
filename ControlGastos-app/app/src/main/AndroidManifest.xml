@@ -10,24 +10,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppFinanzas">
+
+        <!-- PinActivity es la primera pantalla que se abre (Launcher) -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.PinActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MainActivity se abre después de ingresar el PIN correctamente -->
         <activity
-            android:name=".ui.PinActivity"
+            android:name=".ui.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.FormularioMovimientoActivity"
             android:exported="false" />
