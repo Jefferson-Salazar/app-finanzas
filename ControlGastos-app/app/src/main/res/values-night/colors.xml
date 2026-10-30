@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores para Tema Oscuro -->
+    <color name="colorPrimary">#6CDBAC</color>
+    <color name="colorOnPrimary">#003826</color>
+    <color name="colorBackground">#191C1A</color>
+    <color name="colorSurface">#222523</color>
+    <color name="colorOnSurface">#E1E3DF</color>
+    <color name="colorSecondary">#B3CCBE</color>
+</resources>

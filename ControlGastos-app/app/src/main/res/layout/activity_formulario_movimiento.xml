@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="#F4F7F6">
+    android:background="@color/colorBackground">
 
     <!-- Encabezado con Botón de Regresar y Título -->
     <LinearLayout
@@ -21,6 +22,7 @@
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/colorOnSurface"
             android:contentDescription="Regresar" />
 
         <TextView
@@ -30,7 +32,7 @@
             android:text="Movimiento"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#1E293B"
+            android:textColor="@color/colorOnSurface"
             android:layout_marginStart="12dp"/>
     </LinearLayout>
 
@@ -41,14 +43,14 @@
         android:text="Categoría"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:textColor="#334155"
+        android:textColor="@color/colorSecondary"
         android:layout_marginBottom="6dp"/>
 
     <Spinner
         android:id="@+id/spinnerCategoria"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorSurface"
         android:layout_marginBottom="16dp"/>
 
     <!-- Monto -->
@@ -58,17 +60,17 @@
         android:text="Monto (Q)"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:textColor="#334155"
+        android:textColor="@color/colorSecondary"
         android:layout_marginBottom="6dp"/>
 
     <EditText
         android:id="@+id/etMonto"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorSurface"
         android:paddingHorizontal="12dp"
         android:hint="0.00"
-        android:textColor="#1E293B"
+        android:textColor="@color/colorOnSurface"
         android:textColorHint="#94A3B8"
         android:inputType="numberDecimal"
         android:textSize="16sp"
@@ -81,17 +83,17 @@
         android:text="Descripción (Opcional)"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:textColor="#334155"
+        android:textColor="@color/colorSecondary"
         android:layout_marginBottom="6dp"/>
 
     <EditText
         android:id="@+id/etDescripcion"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorSurface"
         android:paddingHorizontal="12dp"
         android:hint="Notas adicionales"
-        android:textColor="#1E293B"
+        android:textColor="@color/colorOnSurface"
         android:textColorHint="#94A3B8"
         android:textSize="16sp"
         android:layout_marginBottom="24dp"/>
@@ -101,9 +103,9 @@
         android:id="@+id/btnGuardarMovimiento"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:backgroundTint="#27AE60"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Guardar Movimiento"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginBottom="12dp"/>

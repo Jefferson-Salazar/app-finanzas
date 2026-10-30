@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -6,7 +7,7 @@
     android:padding="12dp"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Checkbox para selección múltiple  -->
+    <!-- Checkbox para selección múltiple -->
     <CheckBox
         android:id="@+id/checkboxSeleccion"
         android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
         android:clickable="false"
         android:layout_marginEnd="8dp"/>
 
-    <!-- contenido existente -->
+    <!-- Contenido de textos del movimiento -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,14 +30,14 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#1E293B"/>
+            android:textColor="@color/colorOnSurface"/>
 
         <TextView
             android:id="@+id/tvItemConcepto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="#64748B"/>
+            android:textColor="@color/colorSecondary"/>
 
         <TextView
             android:id="@+id/tvItemFecha"
@@ -51,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"/>
 
 </LinearLayout>
