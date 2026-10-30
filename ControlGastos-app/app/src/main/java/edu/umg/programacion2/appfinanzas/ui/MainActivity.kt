@@ -39,6 +39,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // --- VALIDACIÓN DE PIN PARA ARRANQUES POSTERIORES ---
+        val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
+        val estaRegistrado = prefs.getBoolean("is_registered", false)
+
+        // Verificamos si el intent nos autoriza a omitir el PIN (cuando venimos de PinActivity)
+        val debePedirPin = intent.getBooleanExtra("DEBE_PEDIR_PIN", true)
+
+        // Si ya está registrado y debe pedir PIN, interceptamos y exigimos el PIN
+        if (estaRegistrado && debePedirPin) {
+            val intentPin = Intent(this, PinActivity::class.java)
+            startActivity(intentPin)
+            finish() // Cierra MainActivity para que no quede abierta en segundo plano
+            return
+        }
+
+
         setContentView(R.layout.activity_main)
 
         tvBalanceTotal = findViewById(R.id.tvBalanceTotal)
@@ -74,9 +91,9 @@ class MainActivity : AppCompatActivity() {
             val colorGris = Color.parseColor("#7F8C8D")
 
             if (saldoOculto) {
-                tvBalanceTotal.text = "Q *****"
-                tvIngresosTotal.text = "Q *****"
-                tvGastosTotal.text = "Q *****"
+                tvBalanceTotal.text = "Q •••••"
+                tvIngresosTotal.text = "Q •••••"
+                tvGastosTotal.text = "Q •••••"
 
                 // Poner todos en gris cuando sean asteriscos
                 tvBalanceTotal.setTextColor(colorGris)
@@ -99,13 +116,18 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         cargarResumenFinanciero()
 
-        // Comprobar si ya está registrado para mostrar u ocultar el botón de registro
         val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
         val estaRegistrado = prefs.getBoolean("is_registered", false)
+
+        val tvSubtitulo = findViewById<TextView>(R.id.tvSubtitulo)
+
         if (estaRegistrado) {
             btnRegistrarseMain.visibility = View.GONE
+            val nombreUsuario = prefs.getString("user_name", "Usuario")
+            tvSubtitulo?.text = "Registro financiero de $nombreUsuario"
         } else {
             btnRegistrarseMain.visibility = View.VISIBLE
+            tvSubtitulo?.text = "Resumen Financiero"
         }
     }
 
@@ -167,9 +189,9 @@ class MainActivity : AppCompatActivity() {
 
                 // Por defecto oculto con color gris en todas las tarjetas
                 if (saldoOculto) {
-                    tvBalanceTotal.text = "Q *****"
-                    tvIngresosTotal.text = "Q *****"
-                    tvGastosTotal.text = "Q *****"
+                    tvBalanceTotal.text = "Q •••••"
+                    tvIngresosTotal.text = "Q •••••"
+                    tvGastosTotal.text = "Q •••••"
 
                     tvBalanceTotal.setTextColor(colorGris)
                     tvIngresosTotal.setTextColor(colorGris)

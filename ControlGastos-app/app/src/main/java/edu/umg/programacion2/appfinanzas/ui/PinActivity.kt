@@ -13,35 +13,34 @@ class PinActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
-        val estaRegistrado = prefs.getBoolean("is_registered", false)
-
-        // Si no se ha registrado entra directo a MainActivity la primera vez
-        if (!estaRegistrado) {
-            irAMain()
-            return
-        }
-
         setContentView(R.layout.activity_pin)
 
         val etPin = findViewById<EditText>(R.id.etPin)
-        val btnDesbloquear = findViewById<Button>(R.id.btnConfirmarPin)
-        val pinGuardado = prefs.getString("user_pin", "")
+        val btnConfirmarPin = findViewById<Button>(R.id.btnConfirmarPin)
 
-        btnDesbloquear.setOnClickListener {
+        btnConfirmarPin.setOnClickListener {
             val pinIngresado = etPin.text.toString().trim()
+
+            if (pinIngresado.length != 4) {
+                Toast.makeText(this, "El PIN debe ser de 4 digitos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
+            val pinGuardado = prefs.getString("user_pin", "1234")
+
             if (pinIngresado == pinGuardado) {
-                irAMain()
+                // Indicamos a MainActivity que ya pasamos la seguridad del PIN
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("DEBE_PEDIR_PIN", false)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(this, "PIN incorrecto", Toast.LENGTH_SHORT).show()
                 etPin.text.clear()
             }
         }
-    }
-
-    private fun irAMain() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
     }
 }

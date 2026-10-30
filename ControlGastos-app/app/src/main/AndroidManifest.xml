@@ -11,9 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppFinanzas">
 
-        <!-- PinActivity es la primera pantalla que se abre (Launcher) -->
+        <!-- MainActivity es ahora la primera pantalla que se abre (Launcher) -->
         <activity
-            android:name=".ui.PinActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -22,9 +22,9 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity se abre después de ingresar el PIN correctamente -->
+        <!-- PinActivity se abre después si el usuario ya está registrado -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.PinActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

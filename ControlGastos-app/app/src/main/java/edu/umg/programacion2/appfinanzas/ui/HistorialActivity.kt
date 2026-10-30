@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ class HistorialActivity : AppCompatActivity() {
     private lateinit var btnSeleccionarTodo: ImageButton
     private lateinit var spinnerFiltro: Spinner
     private lateinit var recyclerView: RecyclerView
+    private lateinit var tvHistorialVacio: TextView
     private lateinit var transaccionAdapter: TransaccionAdapter
 
     private var listaCompleta: List<Transaccion> = emptyList()
@@ -41,6 +43,7 @@ class HistorialActivity : AppCompatActivity() {
         btnSeleccionarTodo = findViewById(R.id.btnSeleccionarTodo) // Botón para seleccionar todo arriba a la derecha
         spinnerFiltro = findViewById(R.id.spinnerFiltro)
         recyclerView = findViewById(R.id.recyclerHistorial)
+        tvHistorialVacio = findViewById(R.id.tvHistorialVacio) // Mensaje de vacío
 
         transaccionAdapter = TransaccionAdapter(
             listaTransacciones = emptyList(),
@@ -137,7 +140,17 @@ class HistorialActivity : AppCompatActivity() {
             "Gastos" -> listaCompleta.filter { it.tipo.equals("GASTO", ignoreCase = true) }
             else -> listaCompleta
         }
+
         transaccionAdapter.actualizarListanuevas(listaFiltrada)
+
+        // Control de visibilidad para el estado vacío
+        if (listaFiltrada.isEmpty()) {
+            recyclerView.visibility = View.GONE
+            tvHistorialVacio.visibility = View.VISIBLE
+        } else {
+            recyclerView.visibility = View.VISIBLE
+            tvHistorialVacio.visibility = View.GONE
+        }
     }
 
     private fun eliminarElementosSeleccionados() {
