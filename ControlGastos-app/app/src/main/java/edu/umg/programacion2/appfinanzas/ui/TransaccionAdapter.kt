@@ -59,7 +59,6 @@ class TransaccionAdapter(
 
         holder.tvFecha.text = formatearFecha(transaccion.fecha)
 
-        // Mostrar u ocultar checkbox según el modo selección
         if (enModoSeleccion) {
             holder.checkbox.visibility = View.VISIBLE
             holder.checkbox.isChecked = idsSeleccionados.contains(transaccion.id)
@@ -68,7 +67,6 @@ class TransaccionAdapter(
             holder.checkbox.isChecked = false
         }
 
-        // Clic normal
         holder.itemView.setOnClickListener {
             if (enModoSeleccion) {
                 toggleSeleccion(transaccion.id)
@@ -77,7 +75,6 @@ class TransaccionAdapter(
             }
         }
 
-        // Clic largo para activar modo selección
         holder.itemView.setOnLongClickListener {
             if (!enModoSeleccion) {
                 enModoSeleccion = true

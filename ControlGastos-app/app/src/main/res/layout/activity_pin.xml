@@ -1,65 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none"
+    android:overScrollMode="never"
     android:background="@color/colorBackground">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seguridad App Finanzas"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorOnSurface"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ingresa tu PIN de acceso"
-        android:textSize="14sp"
-        android:textColor="@color/colorSecondary"
-        android:layout_marginBottom="24dp"
-        android:gravity="center"/>
-
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginHorizontal="24dp"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/colorSecondary"
-        app:hintEnabled="false">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp">
 
-        <EditText
-            android:id="@+id/etPin"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/colorSurface"
-            android:hint="••••"
-            android:textColorHint="#94A3B8"
-            android:inputType="numberPassword"
-            android:maxLength="4"
-            android:textSize="20sp"
-            android:letterSpacing="0.3"
+        <!-- Logo -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_marginBottom="28dp"
+            app:cardCornerRadius="26dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorSurface"
+            app:strokeColor="#2694A3B8"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:contentDescription="Logo Qallet" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seguridad App Finanzas"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:textColor="@color/colorOnSurface"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/btnConfirmarPin"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="24dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Desbloquear"
-        android:textColor="@color/colorOnPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingresa tu PIN de acceso"
+            android:textSize="14sp"
+            android:textColor="@color/colorSecondary"
+            android:gravity="center"
+            android:layout_marginBottom="36dp" />
 
-</LinearLayout>
+        <!-- PIN -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/colorSurface"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/colorSecondary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPin"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:hint="••••"
+                android:textColorHint="#94A3B8"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.3"
+                android:textColor="@color/colorOnSurface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botón -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmarPin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Desbloquear"
+            android:textAllCaps="false"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="16dp"
+            app:elevation="0dp" />
+
+    </LinearLayout>
+</ScrollView>

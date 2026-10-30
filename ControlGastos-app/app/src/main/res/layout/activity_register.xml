@@ -4,141 +4,209 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none"
+    android:overScrollMode="never"
     android:background="@color/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center">
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
 
-        <!-- Botón para cerrar / salir de la pantalla de registro -->
+        <!-- Encabezado: título y botón cerrar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginBottom="8dp">
+            android:gravity="top"
+            android:layout_marginBottom="32dp">
 
-            <ImageButton
-                android:id="@+id/btnCerrarRegistro"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                app:tint="@color/colorOnSurface"
-                android:contentDescription="Cerrar registro"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Registro de Usuario"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crea tu cuenta local para gestionar tu información con seguridad"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorSecondary"
+                    android:lineSpacingExtra="2dp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/colorSurface"
+                app:strokeColor="#2694A3B8"
+                app:strokeWidth="1dp">
+
+                <ImageButton
+                    android:id="@+id/btnCerrarRegistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="11dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="@color/colorOnSurface"
+                    android:contentDescription="Cerrar registro" />
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Registro de Usuario"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorOnSurface"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crea tu cuenta local para gestionar tu información con seguridad"
-            android:textSize="14sp"
-            android:textColor="@color/colorSecondary"
-            android:gravity="center"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- Nombre (Sin espacios permitidos) -->
-        <EditText
-            android:id="@+id/etNombreRegistro"
+        <!-- Nombre (sin espacios permitidos) -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/colorSurface"
-            android:hint="Nombre *"
-            android:textColorHint="#94A3B8"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="16sp"
-            android:inputType="textVisiblePassword"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/colorSurface"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp">
 
-        <!-- Apellido Opcional -->
-        <EditText
-            android:id="@+id/etApellidoRegistro"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombreRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:hint="Nombre *"
+                android:textColorHint="#94A3B8"
+                android:inputType="textVisiblePassword"
+                android:maxLines="1"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Apellido opcional -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/colorSurface"
-            android:hint="Apellido (Opcional)"
-            android:textColorHint="#94A3B8"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="16sp"
-            android:inputType="textVisiblePassword"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/colorSurface"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellidoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:hint="Apellido (Opcional)"
+                android:textColorHint="#94A3B8"
+                android:inputType="textVisiblePassword"
+                android:maxLines="1"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- PIN -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorSecondary"
-            app:hintEnabled="false">
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/colorSurface"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/colorSecondary">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPinRegistro"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:background="@color/colorSurface"
+                android:layout_height="60dp"
                 android:hint="PIN (4 dígitos) *"
                 android:textColorHint="#94A3B8"
-                android:paddingStart="16dp"
-                android:paddingEnd="48dp"
                 android:inputType="numberPassword"
                 android:maxLength="4"
-                android:textSize="16sp"
                 android:letterSpacing="0.2"
-                android:textColor="@color/colorOnSurface"/>
+                android:maxLines="1"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Confirmar PIN -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorSecondary"
-            app:hintEnabled="false">
+            android:layout_marginBottom="32dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/colorSurface"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/colorSecondary">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirmarPinRegistro"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:background="@color/colorSurface"
+                android:layout_height="60dp"
                 android:hint="Confirmar PIN *"
                 android:textColorHint="#94A3B8"
-                android:paddingStart="16dp"
-                android:paddingEnd="48dp"
                 android:inputType="numberPassword"
                 android:maxLength="4"
-                android:textSize="16sp"
                 android:letterSpacing="0.2"
-                android:textColor="@color/colorOnSurface"/>
+                android:maxLines="1"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón Guardar Registro -->
-        <Button
+        <!-- Botón guardar registro -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCompletarRegistro"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:layout_height="56dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="Completar Registro"
+            android:textAllCaps="false"
             android:textColor="@color/colorOnPrimary"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="16dp"
+            app:elevation="0dp" />
 
     </LinearLayout>
 </ScrollView>

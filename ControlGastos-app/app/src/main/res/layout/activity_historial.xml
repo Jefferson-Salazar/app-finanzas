@@ -4,55 +4,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:fitsSystemWindows="true"
     android:background="@color/colorBackground">
 
-    <!-- Encabezado con botón de regresar, título y botones de acción rápida -->
+    <!-- Encabezado (con espacio extra para la cámara / barra de estado) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp">
+        android:paddingStart="24dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="8dp">
 
-        <ImageButton
-            android:id="@+id/btnRegresarHistorial"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="@color/colorOnSurface"
-            android:contentDescription="Regresar" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorSurface"
+            app:strokeColor="#2694A3B8"
+            app:strokeWidth="1dp">
 
-        <TextView
+            <ImageButton
+                android:id="@+id/btnRegresarHistorial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="11dp"
+                android:background="?attr/selectableItemBackground"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="@color/colorOnSurface"
+                android:contentDescription="Regresar" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Historial"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorOnSurface"
-            android:layout_marginStart="8dp"
-            android:singleLine="true"
-            android:ellipsize="end"/>
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
 
-        <!-- Botón Seleccionar Todo (Arriba a la derecha, inicialmente oculto) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Historial"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorOnSurface"
+                android:singleLine="true"
+                android:ellipsize="end" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tus movimientos"
+                android:textSize="13sp"
+                android:textColor="@color/colorSecondary"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Acciones rápidas (inicialmente ocultas) -->
         <ImageButton
             android:id="@+id/btnSeleccionarTodo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_agenda"
             app:tint="@color/colorOnSurface"
             android:visibility="gone"
             android:contentDescription="Seleccionar todo" />
 
-        <!-- Botón Eliminar Seleccionados (Arriba a la derecha, inicialmente oculto) -->
         <ImageButton
             android:id="@+id/btnEliminarSeleccionados"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_delete"
             app:tint="@color/colorOnSurface"
@@ -65,35 +93,77 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Filtrar por tipo"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-medium"
         android:textColor="@color/colorSecondary"
-        android:layout_marginBottom="6dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="8dp" />
 
-    <Spinner
-        android:id="@+id/spinnerFiltro"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorSurface"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/colorSurface"
+        app:strokeColor="#2694A3B8"
+        app:strokeWidth="1dp">
 
-    <!-- Lista de Transacciones -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerHistorial"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+                android:id="@+id/spinnerFiltro"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingStart="8dp"
+                android:paddingEnd="44dp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/colorSecondary"
+                android:importantForAccessibility="no" />
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Lista + mensaje vacío (comparten el mismo espacio) -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <!-- TextView para mostrar cuando no haya elementos -->
-    <TextView
-        android:id="@+id/tvHistorialVacio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="No hay movimientos registrados"
-        android:textColor="#94A3B8"
-        android:textSize="16sp"
-        android:textStyle="italic"
-        android:visibility="gone"
-        android:layout_marginTop="32dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="24dp"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:id="@+id/tvHistorialVacio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="No hay movimientos registrados"
+            android:textColor="#94A3B8"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </FrameLayout>
 
 </LinearLayout>
