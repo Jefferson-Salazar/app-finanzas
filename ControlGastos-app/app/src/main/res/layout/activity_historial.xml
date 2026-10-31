@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Contenedor vertical principal que organiza toda la pantalla del historial -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:background="@color/colorBackground">
 
-    <!-- Encabezado (con espacio extra para la cámara / barra de estado) -->
+    <!-- Encabezado superior con título, botón de retorno y botones de acción múltiple -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,6 +19,7 @@
         android:paddingTop="24dp"
         android:paddingBottom="8dp">
 
+        <!-- Tarjeta contenedora para el botón de regresar -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="44dp"
             android:layout_height="44dp"
@@ -38,6 +40,7 @@
                 android:contentDescription="Regresar" />
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Bloque de textos del encabezado -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -64,7 +67,7 @@
                 android:layout_marginTop="2dp" />
         </LinearLayout>
 
-        <!-- Acciones rápidas (inicialmente ocultas) -->
+        <!-- Botones de acciones rápidas (Seleccionar todo y Eliminar), inicialmente ocultos -->
         <ImageButton
             android:id="@+id/btnSeleccionarTodo"
             android:layout_width="44dp"
@@ -88,7 +91,7 @@
             android:contentDescription="Eliminar seleccionados" />
     </LinearLayout>
 
-    <!-- Filtro -->
+    <!-- Sección de etiqueta y Spinner de filtrado -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -116,6 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Menú desplegable (Spinner) para filtrar entre Todos, Ingresos o Gastos -->
             <Spinner
                 android:id="@+id/spinnerFiltro"
                 android:layout_width="match_parent"
@@ -135,12 +139,13 @@
         </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Lista + mensaje vacío (comparten el mismo espacio) -->
+    <!-- Contenedor dinámico que comparte espacio entre la lista y el mensaje de vacío -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <!-- RecyclerView encargado de listar las transacciones eficientemente -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerHistorial"
             android:layout_width="match_parent"
@@ -152,6 +157,7 @@
             android:paddingBottom="24dp"
             android:overScrollMode="never" />
 
+        <!-- Mensaje de texto informativo que se muestra únicamente si la lista está vacía -->
         <TextView
             android:id="@+id/tvHistorialVacio"
             android:layout_width="wrap_content"

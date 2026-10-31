@@ -1,7 +1,6 @@
 package edu.umg.programacion2.appfinanzas.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -16,8 +15,10 @@ import edu.umg.programacion2.appfinanzas.R
 import edu.umg.programacion2.appfinanzas.modelo.Transaccion
 import kotlinx.coroutines.launch
 
+// Actividad encargada de mostrar el formulario para registrar o editar un ingreso o gasto
 class FormularioMovimientoActivity : AppCompatActivity() {
 
+    // Instancia del repositorio para guardar o actualizar los datos
     private val repositorio = Dependencias.repositorio
 
     private lateinit var tvTituloFormulario: TextView
@@ -32,7 +33,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
     private var tipoMovimiento: String = "INGRESO"
     private var fechaOriginal: String = ""
 
-    // Listas predefinidas de categorías
+    // Listas predefinidas de categorías para ingresos y gastos
     private val categoriasIngresos = listOf("Salario", "Ventas", "Inversiones", "Regalos", "Otros")
     private val categoriasGastos = listOf("Comida", "Transporte", "Servicios", "Entretenimiento", "Salud", "Educación", "Otros")
 
@@ -40,6 +41,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_movimiento)
 
+        // Conecta las variables del código con los elementos visuales del archivo XML
         tvTituloFormulario = findViewById(R.id.tvTituloFormulario)
         spinnerCategoria = findViewById(R.id.spinnerCategoria)
         etMonto = findViewById(R.id.etMonto)
@@ -47,16 +49,16 @@ class FormularioMovimientoActivity : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardarMovimiento)
         btnRegresar = findViewById(R.id.btnRegresarFormulario)
 
-        // Recibir datos del Intent
+        // Recibe los datos enviados desde la pantalla anterior mediante el Intent
         tipoMovimiento = intent.getStringExtra("TIPO_MOVIMIENTO") ?: "INGRESO"
         esModoEdicion = intent.getBooleanExtra("EDITAR_MODO", false)
 
-        // Configurar el Spinner con la lista correspondiente según el tipo
-        // Configurar el Spinner con un diseño limpio y texto oscuro visible
+        // Configura el menú desplegable (Spinner) con la lista de categorías correspondiente
         val listaCategorias = if (tipoMovimiento.equals("INGRESO", true)) categoriasIngresos else categoriasGastos
         val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listaCategorias)
         spinnerCategoria.adapter = adapterSpinner
 
+        // Si estamos editando, rellena los campos con los datos existentes de la transacción
         if (esModoEdicion) {
             transaccionId = intent.getIntExtra("TRANSACCION_ID", 0)
             fechaOriginal = intent.getStringExtra("FECHA") ?: System.currentTimeMillis().toString()
@@ -65,7 +67,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
             val montoRecibido = intent.getDoubleExtra("MONTO", 0.0)
             val descripcionRecibida = intent.getStringExtra("DESCRIPCION") ?: ""
 
-            // Seleccionar automáticamente la categoría en el Spinner
+            // Selecciona automáticamente la categoría correcta en el Spinner
             val indexCategoria = listaCategorias.indexOf(categoriaRecibida)
             if (indexCategoria >= 0) {
                 spinnerCategoria.setSelection(indexCategoria)
@@ -82,18 +84,22 @@ class FormularioMovimientoActivity : AppCompatActivity() {
             fechaOriginal = System.currentTimeMillis().toString()
         }
 
+        // Cierra la pantalla actual al presionar el botón de regresar
         btnRegresar.setOnClickListener { finish() }
 
+        // Ejecuta la función de guardar o actualizar al hacer clic en el botón principal
         btnGuardar.setOnClickListener {
             guardarOActualizarTransaccion(listaCategorias)
         }
     }
 
+    // Valida los datos y los envía al repositorio (para guardar en la BD local)
     private fun guardarOActualizarTransaccion(listaCategorias: List<String>) {
         val categoria = spinnerCategoria.selectedItem?.toString() ?: listaCategorias.first()
         val montoStr = etMonto.text.toString().trim()
         val descripcion = etDescripcion.text.toString().trim()
 
+        // Validación básica de campo vacío
         if (montoStr.isEmpty()) {
             Toast.makeText(this, "Por favor ingresa el monto", Toast.LENGTH_SHORT).show()
             return
@@ -101,6 +107,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
 
         val monto = montoStr.toDoubleOrNull() ?: 0.0
 
+        // Lanza una corrutina en segundo plano para interactuar con la base de datos sin congelar la app
         lifecycleScope.launch {
             try {
                 val transaccion = Transaccion(
@@ -120,7 +127,7 @@ class FormularioMovimientoActivity : AppCompatActivity() {
                     repositorio.agregar(transaccion)
                     Toast.makeText(this@FormularioMovimientoActivity, "Transacción guardada", Toast.LENGTH_SHORT).show()
                 }
-                finish()
+                finish() // Cierra la pantalla y regresa al Dashboard
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this@FormularioMovimientoActivity, "Error al guardar", Toast.LENGTH_SHORT).show()

@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
 
+// Actividad principal (Dashboard): Muestra el balance general, ingresos, gastos y accesos a las demás pantallas
 class MainActivity : AppCompatActivity() {
 
     private val repositorio = Dependencias.repositorio
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRegistrarseMain: Button
     private lateinit var btnOcultarSaldo: ImageButton
 
-    // Inicia en true para que por defecto aparezca oculto
+    // Controla si el saldo está oculto por seguridad (inicia en true)
     private var saldoOculto = true
     private var balanceUltimo: String = "Q 0.00"
     private var ingresosUltimo: String = "Q 0.00"
@@ -44,17 +45,16 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
         val estaRegistrado = prefs.getBoolean("is_registered", false)
 
-        // Verificamos si el intent nos autoriza a omitir el PIN (cuando venimos de PinActivity)
+        // Verifica si el Intent autoriza omitir el PIN (cuando venimos de PinActivity)
         val debePedirPin = intent.getBooleanExtra("DEBE_PEDIR_PIN", true)
 
-        // Si ya está registrado y debe pedir PIN, interceptamos y exigimos el PIN
+        // Si ya está registrado y debe pedir PIN, intercepta y abre la pantalla de seguridad
         if (estaRegistrado && debePedirPin) {
             val intentPin = Intent(this, PinActivity::class.java)
             startActivity(intentPin)
             finish() // Cierra MainActivity para que no quede abierta en segundo plano
             return
         }
-
 
         setContentView(R.layout.activity_main)
 
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         btnRegistrarseMain = findViewById(R.id.btnRegistrarseMain)
         btnOcultarSaldo = findViewById(R.id.btnOcultarSaldo)
 
+        // Verifica si el usuario está registrado antes de permitir registrar un ingreso o gasto
         btnRegistrarIngreso.setOnClickListener {
             verificarYProceder("INGRESO")
         }
@@ -75,17 +76,19 @@ class MainActivity : AppCompatActivity() {
             verificarYProceder("GASTO")
         }
 
+        // Abre la pantalla del historial de transacciones
         btnVerHistorial.setOnClickListener {
             val intent = Intent(this, HistorialActivity::class.java)
             startActivity(intent)
         }
 
+        // Abre la pantalla de registro de usuario
         btnRegistrarseMain.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        // Evento del botón Ojo para alternar visibilidad de montos
+        // Evento del botón de ojo para alternar la visibilidad de los saldos y montos
         btnOcultarSaldo.setOnClickListener {
             saldoOculto = !saldoOculto
             val colorGris = Color.parseColor("#7F8C8D")
@@ -95,7 +98,6 @@ class MainActivity : AppCompatActivity() {
                 tvIngresosTotal.text = "Q •••••"
                 tvGastosTotal.text = "Q •••••"
 
-                // Poner todos en gris cuando sean asteriscos
                 tvBalanceTotal.setTextColor(colorGris)
                 tvIngresosTotal.setTextColor(colorGris)
                 tvGastosTotal.setTextColor(colorGris)
@@ -104,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                 tvIngresosTotal.text = ingresosUltimo
                 tvGastosTotal.text = gastosUltimo
 
-                // Restaurar colores originales
                 tvBalanceTotal.setTextColor(balanceColorActual)
                 tvIngresosTotal.setTextColor(Color.parseColor("#27AE60"))
                 tvGastosTotal.setTextColor(Color.parseColor("#E74C3C"))
@@ -112,13 +113,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Se ejecuta al volver a primer plano para recargar los saldos y verificar el estado del usuario
     override fun onResume() {
         super.onResume()
         cargarResumenFinanciero()
 
         val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
         val estaRegistrado = prefs.getBoolean("is_registered", false)
-
         val tvSubtitulo = findViewById<TextView>(R.id.tvSubtitulo)
 
         if (estaRegistrado) {
@@ -131,6 +132,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Comprueba si el usuario está registrado; si no, muestra una alerta exigiendo el registro
     private fun verificarYProceder(tipoMovimiento: String) {
         val prefs = getSharedPreferences("AppFinanzasPrefs", Context.MODE_PRIVATE)
         val estaRegistrado = prefs.getBoolean("is_registered", false)
@@ -152,6 +154,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Consulta las transacciones en la base de datos local, calcula totales y formatea las cantidades en Quetzales
     private fun cargarResumenFinanciero() {
         lifecycleScope.launch {
             try {
@@ -179,6 +182,7 @@ class MainActivity : AppCompatActivity() {
                 gastosUltimo = "Q ${formatoMoneda.format(totalGastos)}"
                 balanceUltimo = "Q ${formatoMoneda.format(balance)}"
 
+                // Define el color del balance según si es positivo (verde), negativo (rojo) o neutro (gris)
                 balanceColorActual = when {
                     balance > 0.01 -> Color.parseColor("#27AE60")
                     balance < -0.01 -> Color.parseColor("#E74C3C")
@@ -187,7 +191,6 @@ class MainActivity : AppCompatActivity() {
 
                 val colorGris = Color.parseColor("#7F8C8D")
 
-                // Por defecto oculto con color gris en todas las tarjetas
                 if (saldoOculto) {
                     tvBalanceTotal.text = "Q •••••"
                     tvIngresosTotal.text = "Q •••••"

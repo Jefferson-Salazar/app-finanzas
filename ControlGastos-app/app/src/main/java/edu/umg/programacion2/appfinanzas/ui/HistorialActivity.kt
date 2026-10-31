@@ -19,6 +19,7 @@ import edu.umg.programacion2.appfinanzas.R
 import edu.umg.programacion2.appfinanzas.modelo.Transaccion
 import kotlinx.coroutines.launch
 
+// Actividad encargada de mostrar el listado completo del historial de transacciones con opciones de filtro y eliminación múltiple
 class HistorialActivity : AppCompatActivity() {
 
     private val repositorio = Dependencias.repositorio
@@ -39,16 +40,17 @@ class HistorialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_historial)
 
         btnRegresar = findViewById(R.id.btnRegresarHistorial)
-        btnEliminarSeleccionados = findViewById(R.id.btnEliminarSeleccionados) // Bote de basura arriba a la derecha
-        btnSeleccionarTodo = findViewById(R.id.btnSeleccionarTodo) // Botón para seleccionar todo arriba a la derecha
+        btnEliminarSeleccionados = findViewById(R.id.btnEliminarSeleccionados) // Botón de basura para borrar seleccionados
+        btnSeleccionarTodo = findViewById(R.id.btnSeleccionarTodo) // Botón para marcar todos los elementos
         spinnerFiltro = findViewById(R.id.spinnerFiltro)
         recyclerView = findViewById(R.id.recyclerHistorial)
-        tvHistorialVacio = findViewById(R.id.tvHistorialVacio) // Mensaje de vacío
+        tvHistorialVacio = findViewById(R.id.tvHistorialVacio) // Texto que se muestra si no hay registros
 
+        // Configura el adaptador del RecyclerView y define las acciones al hacer clic, clic largo o seleccionar ítems
         transaccionAdapter = TransaccionAdapter(
             listaTransacciones = emptyList(),
             onClick = { transaccionSeleccionada ->
-                // Clic normal: Abrir edición pasando TODOS los datos correctamente
+                // Clic normal: Abre el formulario pasando todos los datos de la transacción para editarla
                 val intent = Intent(this, FormularioMovimientoActivity::class.java).apply {
                     putExtra("EDITAR_MODO", true)
                     putExtra("TRANSACCION_ID", transaccionSeleccionada.id)
@@ -61,7 +63,7 @@ class HistorialActivity : AppCompatActivity() {
                 startActivity(intent)
             },
             onLongClick = {
-                // Al hacer clic largo, mostramos los botones superiores
+                // Clic largo: Activa el modo selección y muestra los botones superiores de acción
                 btnEliminarSeleccionados.visibility = View.VISIBLE
                 btnSeleccionarTodo.visibility = View.VISIBLE
             },
@@ -78,12 +80,12 @@ class HistorialActivity : AppCompatActivity() {
 
         btnRegresar.setOnClickListener { finish() }
 
-        // Botón Seleccionar Todo
+        // Selecciona todos los elementos de la lista al hacer clic
         btnSeleccionarTodo.setOnClickListener {
             transaccionAdapter.seleccionarTodos()
         }
 
-        // Botón Eliminar con Diálogo de Confirmación
+        // Muestra un cuadro de diálogo de confirmación antes de eliminar las transacciones seleccionadas
         btnEliminarSeleccionados.setOnClickListener {
             val cantidad = transaccionAdapter.idsSeleccionados.size
             if (cantidad > 0) {
@@ -104,7 +106,7 @@ class HistorialActivity : AppCompatActivity() {
             }
         }
 
-        // Configurar Spinner de filtros
+        // Configura el menú desplegable (Spinner) para filtrar por tipo de movimiento
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opcionesFiltro)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerFiltro.adapter = adapter
@@ -117,11 +119,13 @@ class HistorialActivity : AppCompatActivity() {
         }
     }
 
+    // Se ejecuta cada vez que la pantalla vuelve a primer plano para recargar los datos actualizados
     override fun onResume() {
         super.onResume()
         cargarDatos()
     }
 
+    // Consulta la base de datos en segundo plano para obtener todas las transacciones del usuario
     private fun cargarDatos() {
         lifecycleScope.launch {
             try {
@@ -134,6 +138,7 @@ class HistorialActivity : AppCompatActivity() {
         }
     }
 
+    // Filtra la lista completa según la opción seleccionada en el Spinner (Todos, Ingresos o Gastos)
     private fun filtrarTransacciones(tipoFiltro: String) {
         val listaFiltrada = when (tipoFiltro) {
             "Ingresos" -> listaCompleta.filter { it.tipo.equals("INGRESO", ignoreCase = true) }
@@ -143,7 +148,7 @@ class HistorialActivity : AppCompatActivity() {
 
         transaccionAdapter.actualizarListanuevas(listaFiltrada)
 
-        // Control de visibilidad para el estado vacío
+        // Muestra un mensaje si la lista está vacía u oculta el texto si hay registros
         if (listaFiltrada.isEmpty()) {
             recyclerView.visibility = View.GONE
             tvHistorialVacio.visibility = View.VISIBLE
@@ -153,6 +158,7 @@ class HistorialActivity : AppCompatActivity() {
         }
     }
 
+    // Elimina de la base de datos local los elementos que el usuario seleccionó
     private fun eliminarElementosSeleccionados() {
         val idsAEliminar = transaccionAdapter.idsSeleccionados.toList()
         lifecycleScope.launch {
@@ -164,7 +170,7 @@ class HistorialActivity : AppCompatActivity() {
                 transaccionAdapter.limpiarSeleccion()
                 btnEliminarSeleccionados.visibility = View.GONE
                 btnSeleccionarTodo.visibility = View.GONE
-                cargarDatos()
+                cargarDatos() // Recarga el listado tras la eliminación
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this@HistorialActivity, "Error al eliminar", Toast.LENGTH_SHORT).show()

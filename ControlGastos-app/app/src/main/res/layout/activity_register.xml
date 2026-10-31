@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- ScrollView como contenedor principal para permitir desplazamiento vertical en formularios largos -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,6 +10,7 @@
     android:overScrollMode="never"
     android:background="@color/colorBackground">
 
+    <!-- LinearLayout vertical interno con márgenes y espaciados simétricos -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +20,7 @@
         android:paddingTop="24dp"
         android:paddingBottom="32dp">
 
-        <!-- Encabezado: título y botón cerrar -->
+        <!-- Encabezado superior: Título de bienvenida y botón para cerrar la pantalla -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,6 +53,7 @@
                     android:layout_marginTop="8dp" />
             </LinearLayout>
 
+            <!-- Tarjeta circular contenedora del botón de cancelar o cerrar -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="44dp"
                 android:layout_height="44dp"
@@ -72,7 +75,7 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Nombre (sin espacios permitidos) -->
+        <!-- Campo de entrada para el Nombre del usuario -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +103,7 @@
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Apellido opcional -->
+        <!-- Campo de entrada para el Apellido (opcional) -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,7 +131,7 @@
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- PIN -->
+        <!-- Campo de entrada para configurar el PIN de seguridad -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,7 +163,7 @@
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Confirmar PIN -->
+        <!-- Campo de entrada para confirmar el PIN de seguridad -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -192,7 +195,7 @@
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón guardar registro -->
+        <!-- Botón principal para completar el registro y guardar credenciales -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCompletarRegistro"
             android:layout_width="match_parent"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- ScrollView como contenedor raíz para asegurar que la pantalla se pueda desplazar si el teclado virtual cubre los campos -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,6 +10,7 @@
     android:overScrollMode="never"
     android:background="@color/colorBackground">
 
+    <!-- LinearLayout interno centrado para ordenar el logotipo, textos y el campo de PIN -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +21,7 @@
         android:paddingTop="48dp"
         android:paddingBottom="32dp">
 
-        <!-- Logo -->
+        <!-- Logotipo centrado dentro de una tarjeta con esquinas redondeadas -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="84dp"
             android:layout_height="84dp"
@@ -37,6 +39,7 @@
                 android:contentDescription="Logo Qallet" />
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Título descriptivo de la pantalla de seguridad -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,6 +50,7 @@
             android:gravity="center"
             android:layout_marginBottom="8dp" />
 
+        <!-- Subtítulo de instrucción para el usuario -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +60,7 @@
             android:gravity="center"
             android:layout_marginBottom="36dp" />
 
-        <!-- PIN -->
+        <!-- Campo de entrada de texto moderno para el PIN con botón de visibilidad integrado -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +93,7 @@
                 android:textColor="@color/colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón -->
+        <!-- Botón principal para confirmar el PIN y desbloquear la app -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnConfirmarPin"
             android:layout_width="match_parent"

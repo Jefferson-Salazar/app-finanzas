@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Contenedor principal vertical que organiza todo el panel principal (Dashboard) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,6 +8,7 @@
     android:fitsSystemWindows="true"
     android:background="@color/colorBackground">
 
+    <!-- ScrollView para permitir desplazamiento vertical en la parte superior -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -24,7 +26,7 @@
             android:paddingTop="24dp"
             android:paddingBottom="16dp">
 
-            <!-- Encabezado: logo, título y botón ojo -->
+            <!-- Encabezado superior: Logo, nombre de la app, subtítulo y botón del ojo para ocultar saldo -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +97,7 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- Balance general -->
+            <!-- Tarjeta de Balance General (Muestra el dinero total disponible) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,13 +134,14 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Ingresos y gastos -->
+            <!-- Tarjetas divididas de Ingresos y Gastos -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="24dp">
 
+                <!-- Tarjeta de Ingresos (ocupa el 50% del ancho con layout_weight) -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -176,6 +179,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Tarjeta de Gastos (ocupa el otro 50% del ancho) -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -214,7 +218,7 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- Acciones rápidas -->
+            <!-- Botones de acciones rápidas (Registrar Ingreso / Registrar Gasto) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -258,7 +262,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Zona inferior fija -->
+    <!-- Zona inferior fija (Botones permanentes para ver historial y registrarse) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
